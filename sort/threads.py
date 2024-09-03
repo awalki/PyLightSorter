@@ -1,138 +1,119 @@
 import threading
-import time
 import os
 import shutil
 import uuid
 
-from glob import glob
 from pathlib import Path
 from rich.console import Console
 from datetime import datetime
 
 from config.config import ConfigManager
-from templates.handle_templates import HandleTemplates
+from sort.paths import GetPaths
 
 c = Console()
+now = datetime.now()
+formatted_now = now.strftime("%H-%M-%S_%Y-%m-%d")
+unique_id = uuid.uuid1()
 
 class MyThread(threading.Thread):
 
-    def __init__(self, logs_path, output):
+    def __init__(self, action):
+        """
+        :param action: что сейчас будет делать сортер
+        """
         super().__init__()
-        self.logs_path = logs_path
-        self.output = output
+        self.action = action
+        self.logs_path = Path("logs")
+        self.output = Path("output")
+        self.config = ConfigManager("config.ini").read_keys("Services")
 
-    def sort_tdata(self, tdata):
-        unique_id = uuid.uuid4().hex
-        now = datetime.now()
-        formatted_date = now.strftime("%H_%M %d-%m-%y")
+        self.cookies = GetPaths(self.logs_path).get_path("cookies")
+        self.passwords = GetPaths(self.logs_path).get_path("password")
+        self.discord = GetPaths(self.logs_path).get_path("discord_tokens")
+        self.tdata = GetPaths(self.logs_path).get_path("tdata")
 
-        tdata_output_path = Path(self.output) / f"result-{formatted_date}" / "tdata" / f"tdata-{unique_id}"
-        source_path = Path(tdata)
+    def choice_action(self):
+        match self.action:
+            case "Отсортировать tdata":
+                print("Сортируем tdata...")
+
+                self.sort_tdata()
+            case "Отсортировать discord tokens":
+                print("Сортируем discord tokens...")
+
+                self.sort_ds_tokens()
+            case "Отсортировать логи по запросу":
+                print("Сортируем логи по запросу...")
+
+                self.sort_logs()
+
+    def sort_tdata(self):
+        for tdata in self.tdata:
+            dest = os.path.join(self.output / f"tdata-{formatted_now}" / f"tdata-{unique_id}")
+
+            shutil.copytree(tdata, dest, dirs_exist_ok=True)
+
+    def sort_ds_tokens(self):
+        tokens_array = []
+
+        for token_file in self.discord:
+            with open(token_file, "r") as file:
+                tokens_array.extend(file.readlines())
+
+        with open(Path(f"output/discord-tokens-{formatted_now}.txt"), "w") as output_file:
+            output_file.writelines(tokens_array)
+
+    @staticmethod
+    def search_key_in_file(file_path, key):
+        """
+        Проверяет, содержится ли ключ в файле по указанному пути.
+        """
+        if not os.path.isfile(file_path):
+            print(f"Файл {file_path} не существует.")
+            return False
 
         try:
-            shutil.copytree(source_path, tdata_output_path)
-
+            with open(file_path, 'r') as file:
+                contents = file.read()
+                return key in contents
         except Exception as e:
-            print(f"An error occurred: {e}")
+            print(f"Ошибка при чтении файла {file_path}: {e}")
+            return False
 
-    def sort_cookies(self, cookies):
-        unique_id = uuid.uuid4().hex
-        now = datetime.now()
-        formatted_date = now.strftime("%H_%M %d-%m-%y")
+    def sort_logs(self):
+        for k, v in self.config.items():
+            if v != "false":
+                for cookie in self.cookies:
+                    if self.search_key_in_file(cookie, k):
+                        log_path = os.path.dirname(cookie)
+                        log_folder = os.path.basename(os.path.dirname(log_path))
+                        log = os.path.join('logs', log_folder)
 
-        # Определяем пути
-        cookies_output_path = Path(self.output) / f"result-{formatted_date}" / "cookies"
-        source_path = Path(cookies)
-        destination_path = cookies_output_path / f"cookies-{unique_id}.txt"
+                        dest = os.path.join(self.output / f"result-{formatted_now}" / k, log_folder)
 
-        try:
-            # Создаем директории, если они не существуют
-            cookies_output_path.mkdir(parents=True, exist_ok=True)
+                        if os.path.isdir(log):
+                            shutil.copytree(log, dest, dirs_exist_ok=True)
 
-            # Проверяем, что исходный файл существует
-            if source_path.is_file():
-                shutil.copy(source_path, destination_path)
-            else:
-                print(f"Source file does not exist: {source_path}")
+                for password in self.passwords:
+                    if self.search_key_in_file(password, k):
+                        log_path = os.path.dirname(password)
+                        log_folder = os.path.basename(os.path.dirname(log_path))
+                        log = os.path.join('logs', log_folder)
 
-        except Exception as e:
-            print(f"An error occurred: {e}")
+                        dest = os.path.join(self.output / f"result-{formatted_now}" / k, log_folder)
 
-    def sort_passwords(self, passwords):
-        unique_id = uuid.uuid4().hex
-        now = datetime.now()
-        formatted_date = now.strftime("%H_%M %d-%m-%y")
-
-        # Определяем пути
-        passwords_output_path = Path(self.output) / f"result-{formatted_date}" / "passwords"
-        source_path = Path(passwords)
-        destination_path = passwords_output_path / f"passwords-{unique_id}.txt"
-
-        try:
-            # Создаем директории, если они не существуют
-            passwords_output_path.mkdir(parents=True, exist_ok=True)
-
-            # Проверяем, что исходный файл существует
-            if source_path.is_file():
-                shutil.copy(source_path, destination_path)
-            else:
-                print(f"Source file does not exist: {source_path}")
-
-        except Exception as e:
-            print(f"An error occurred: {e}")
+                        if os.path.isdir(log):
+                            shutil.copytree(log, dest, dirs_exist_ok=True)
 
     def run(self):
-        current_template = ConfigManager("config.ini").read_key("PyLightSorter", "template")
+        if not os.path.exists(self.output):
+            os.mkdir(self.output)
+        if not os.path.exists(self.logs_path):
+            os.mkdir(self.logs_path)
+        else:
+            self.choice_action()
 
-        template_json = HandleTemplates(current_template).solve_template()
 
-        cookies = template_json["cookies"]
-        password = template_json["password"]
-
-
-        logs_directory = Path(self.logs_path)
-
-        search_app = template_json.get('search-app', {})
-
-        for log_dir in logs_directory.iterdir():
-            if log_dir.is_dir():
-                cookie_directory = log_dir / cookies
-
-                for k, v in search_app.items():
-                    app_dir = log_dir / v
-
-                    tdata_dir = log_dir / search_app["telegram"]
-                    ds_dir = log_dir / search_app['discord']
-
-                    if app_dir.is_dir():
-                        if app_dir == tdata_dir:
-                            # c.print(f"[blue bold]Нашел TDATA {log_dir / search_app['telegram']}")
-
-                            self.sort_tdata(tdata_dir)
-                        if app_dir == ds_dir:
-                            for file in ds_dir.glob("*.txt"):
-                                with file.open('r') as f:
-                                    pass
-                        else:
-                            for file in app_dir.glob('*.txt'):
-                                with file.open('r') as f:
-                                    pass
-
-                if cookie_directory.is_dir():
-                    for file in cookie_directory.glob('*.txt'):
-                        with file.open('r') as f:
-                            self.sort_cookies(file)
-
-                try:
-                    with open(log_dir / password, 'r') as f:
-                        self.sort_passwords(log_dir / password)
-
-                        get_config_items = ConfigManager("config.ini").read_keys("Services")
-
-                        for k,v in get_config_items.items():
-                            print(k, v)
-                except Exception as e:
-                    pass
 
 
 

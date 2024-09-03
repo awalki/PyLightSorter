@@ -1,0 +1,54 @@
+YoutubeDownloader
+Algodoo v2.1.0
+nodongle.biz dongle backup solution
+EVEREST Ultimate Edition v5.50
+Freemake Video Converter versión 4.1.13
+GameSpy Arcade
+GeoGebra 5
+Google Chrome
+Imperivm - Las Grandes Batallas de Roma
+LiveCD 1.2
+Microsoft Visual Studio 2005 Tools for Applications - ENU
+SOLIDWORKS 2016 x64 Edition SP03
+TLauncher
+Topview 2.2.2.3-00
+Loquendo TTS 7 Spanish
+WPTx64
+Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.4148
+Intel(R) USB 3.0 eXtensible Host Controller Driver
+Java 8 Update 361
+Intel(R) Identity Protection Technology 1.2.32.0
+Loquendo TTS 7 SDK Distribution
+SQL Server Browser for SQL Server 2014
+Microsoft Visual C++ 2015-2019 Redistributable (x64) - 14.28.29325
+Microsoft Visual C++ 2012 Redistributable (x86) - 11.0.61030
+Microsoft Visual C++ 2015-2022 Redistributable (x86) - 14.31.31103
+Launcher Prerequisites (x64)
+Java Auto Updater
+Wondershare Helper Compact 2.6.0
+Microsoft Visual C++ 2022 X86 Additional Runtime - 14.31.31103
+Microsoft Visual Studio Tools for Applications 2017
+Intel(R) Management Engine Components
+Windows Installer
+Microsoft Visual C++ 2022 X86 Minimum Runtime - 14.31.31103
+Wondershare Recoverit(Build 11.0.4.10)
+Microsoft Visual C++ 2005 Redistributable
+Software Intel® PROSet/Wireless
+Sentinel Protection Installer 7.6.6
+Microsoft Office 2003 Web Components
+Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.17
+Microsoft Visual C++ 2008 Redistributable - x86 9.0.30729.6161
+CorelDRAW Graphics Suite 2018 - IPM Content
+Microsoft Visual Studio Tools for Applications 2017 x86 Hosting Support
+Adobe Refresh Manager
+Adobe Acrobat Reader - Romanian
+Microsoft Visual C++ 2012 x86 Additional Runtime - 11.0.61030
+Microsoft Visual C++ 2012 x86 Minimum Runtime - 11.0.61030
+Software para dispositivos de chipset Intel®
+Microsoft Visual C++ 2012 Redistributable (x64) - 11.0.610300
+Microsoft Visual Studio 2005 Tools for Applications - ENU
+Grabadora de Audio Gratis V2.1.7
+Mobile Broadband Drivers
+Microsoft Visual C++ 2010  x86 Redistributable - 10.0.40219
+Intel(R) Processor Graphics
+Intel(R) SDK for OpenCL - CPU Only Runtime Package

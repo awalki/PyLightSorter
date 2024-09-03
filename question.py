@@ -2,21 +2,40 @@ import inquirer
 
 class Question:
 
-    def __init__(self, name, message):
+    def __init__(self, name, message, choices: list):
+        """
+        Инициация, отцы, отцы, отцы, отцы, отца (окси лифт, кто не понял)
+        :param name: имя по которому идентифицируется вопрос
+        :param message: текст вопроса пользователю
+        :param choices: список из ответов предложенных пользователю
+        """
         self.name = name
         self.message = message
+        self.choices = choices
 
     def send(self):
+        """
+        Вопрос с ограниченным числом выборов
+        :return: ответ пользователя
+        """
         questions = [
-            inquirer.Text(name=self.name, message=self.message),
+            inquirer.List(
+                self.name,
+                message=self.message,
+                choices=self.choices,
+            ),
         ]
 
-        answers = inquirer.prompt(questions)
+        answer = inquirer.prompt(questions)
 
-        return answers
+        return answer
 
     @staticmethod
     def confirm():
+        """
+        Вопрос с 1 ответом из 2 предложенных
+        :return: ответ ("Да" или "Нет") от пользователя
+        """
         questions = [
             inquirer.List(
                 "continue",
@@ -25,7 +44,7 @@ class Question:
             ),
         ]
 
-        answers = inquirer.prompt(questions)
+        answer = inquirer.prompt(questions)
 
-        return answers
+        return answer
 

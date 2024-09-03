@@ -1,0 +1,37 @@
+# Buy now: TG @lummanowork
+# Buy&Sell logs: @lummamarketbot
+- LummaC2 Build: Aug 28 2024
+- LID: yau6Na--1202156955
+- Configuration: 
+- Path: C:\Windows\Microsoft.NET\Framework\v4.0.30319\RegAsm.exe
+
+- OS Version: Windows 7 Ultimate  (6.1.0) x64
+- Local Date: 31.08.2024 16:37:58
+- Time Zone: UTC+3
+- Install Date: 17.03.2021 17:49:59
+- Elevated: true
+- Computer: ADMINLENOVOTHIN
+- User: Admin Lenovo think
+- Domain: 
+- Hostname: AdminLenovothin
+- NetBIOS: ADMINLENOVOTHIN
+- Language: es-ES
+- Anti Virus:
+	- None
+- HWID: D7536A8559B01AA19CBB418DC0A17055
+- RAM Size: 8192MB
+- CPU Vendor: GenuineIntel
+- CPU Name: Intel(R) Core(TM) i5-4210H CPU @ 2.90GHz
+- CPU Threads: 4
+- CPU Cores: 2
+- GPU: Intel(R) HD Graphics 4600
+- Display resolution: 1366x768
+
+- IP Address: 46.97.168.209
+- Time: 31.08.2024 16:38:12 (sig:1725111492.5d552fef367c6d2d0e2326cfecbaae8c)
+- Country: RO
+
+------------------------------------
+Automated log store >> t.me/lummamarketbot
+Tens of thousands of logs for sale, rating system, search by filters and countries, hundreds of sellers with their own storefronts. Unique development based on MaaS from LummaC2.
+Purchase quality material right now - t.me/lummamarketbot

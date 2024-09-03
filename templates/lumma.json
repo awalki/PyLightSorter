@@ -1,8 +1,7 @@
 {
   "search-app": {
     "telegram": "Applications/Telegram/",
-    "discord": "Applications/Discord/",
-    "steam": "Applications/Steam/"
+    "discord": "Applications/Discord/"
   },
   "cookies": "Cookies",
   "password": "All Passwords.txt"

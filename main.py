@@ -6,7 +6,11 @@ from sort.threads import MyThread
 
 config = ConfigManager("config.ini")
 
-question = Question("thread-count", "Введите кол-во потоков")
+template_choices = ["lumma", "meta", "redline", "vidar"]
+template_question = Question("template", "Выберите шаблон (пока работает только lumma)", template_choices)
+
+action_choices = ["Отсортировать tdata", "Отсортировать discord tokens", "Отсортировать логи по запросу"]
+action_question = Question("action", "Выберите, что должен сделать сортер", action_choices)
 
 if __name__ == "__main__":
     print("""
@@ -20,12 +24,10 @@ if __name__ == "__main__":
         |___/          |___/                                          
     """)
 
-    if config.read_key("PyLightSorter", "threads") != "false":
-        current_threads = config.read_key("PyLightSorter", "threads")
+    if config.read_key("PyLightSorter", "template") != "false":
         current_template = config.read_key("PyLightSorter", "template")
 
         settings = [
-            ["Потоки", current_threads],
             ["Шаблон", current_template],
         ]
         header = ["Ключ", "Значение"]
@@ -33,16 +35,17 @@ if __name__ == "__main__":
         print("\nВаши настройки")
         print(tabulate(settings, headers=header, tablefmt="grid"), end="\n\n")
     else:
-        thr_count = question.send()
+        user_template = template_question.send()
 
-        config.change_key("PyLightSorter", "threads", thr_count["thread-count"])
+        config.change_key("PyLightSorter", "template", user_template["template"])
 
-    yes_or_no = question.confirm()
+    user_action = action_question.send()
+    yes_or_no = action_question.confirm()
 
     if yes_or_no["continue"] != "Да":
         exit(1)
     else:
-        my_thread = MyThread("logs", "output")
+        my_thread = MyThread(user_action["action"])
         my_thread.start()
         my_thread.join()
 
